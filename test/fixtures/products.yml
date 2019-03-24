@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  category_id: 1
+  quantity: 1
+  code: MyString
+  remaining_quantity: 1
+
+two:
+  name: MyString
+  category_id: 1
+  quantity: 1
+  code: MyString
+  remaining_quantity: 1
