@@ -6,8 +6,7 @@
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Inventory
-          <small>Products</small>
+          Past Orders
         </h1>
         <ol class="breadcrumb">
           <li>
@@ -15,7 +14,7 @@
               <i class="fa fa-home"></i>
               Home Page</a>
           </li>
-          <li class="active">Check Inventory</li>
+          <li class="active">Past Orders</li>
         </ol>
       </section>
 
@@ -30,31 +29,25 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th>Order Id</th>
                       <th>Category</th>
-                      <th>Name</th>
-                      <th>Code</th>
-                      <th>Description</th>
+                      <th>Item</th>
                       <th>Quantity</th>
-                      <th>Available Qty</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
-                      <th>Borrow</th>
+                      <th>Purchased at</th>
+                      <th>Returned at</th>
+                      <th>Supplier</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <% @products.each do |product| %>
+                    <% @inactive.each do |order| %>
                     <tr>
-                      <td><%= product.id %></td>
-                      <td><%= product.category.name %></td>
-                      <td><%= product.name %></td>
-                      <td><%= product.code %></td>
-                      <td><%= product.description %></td>
-                      <td><%= product.quantity %></td>
-                      <td><%= product.remaining_quantity %></td>
-                      <td><%= link_to 'Edit', edit_product_path(product) %></td>
-                      <td><%= link_to 'Delete', product, method: :delete, data: { confirm: 'Are you sure you want to delete this product?' } %></td>
-                      <td><%= link_to 'Borrow', new_order_path(product: product.id) %></td>
+                      <td><%= order.id %></td>
+                      <td><%= order.product.category %></td>
+                      <td><%= order.product.name %></td>
+                      <td><%= order.quantity %></td>
+                      <td><%= order.created_at.strftime("%d/%m/%Y, %H:%M") %></td>
+                      <td><%= order.updated_at.strftime("%d/%m/%Y, %H:%M") %></td>
+                      <td><%= order.supplier.name %></td>
                     </tr>
                     <% end %>
                   </tbody>
