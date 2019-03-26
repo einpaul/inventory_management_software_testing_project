@@ -39,6 +39,35 @@ class SuppliersController < ApplicationController
     end
   end
 
+  def disable
+    @supplier = Supplier.find(params[:id])
+    if @supplier.status == 'revoked'
+      flash[:error] = 'You cannot disable a revoked Supplier'
+    else
+      @supplier.disabled!
+      flash[:success] = 'Supplier Disabled'
+    end
+    redirect_to root_url
+  end
+
+  def revoke
+    @supplier = Supplier.find(params[:id])
+    @supplier.revoked!
+    flash[:success] = I18n.t 'Supplier Revoked'
+    redirect_to root_url
+  end
+
+  def activate
+    @supplier = Supplier.find(params[:id])
+    if @supplier.status == 'revoked'
+      flash[:error] = 'You cannot activate a revoked Supplier'
+    else
+      @supplier.active!
+      flash[:success] = 'Supplier Active'
+    end
+    redirect_to root_url
+  end
+
   private
     def set_supplier
       @supplier = Supplier.find(params[:id])

@@ -7,7 +7,7 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
-    @category = Category.all
+    @categories = Category.all
   end
 
   def edit
@@ -38,6 +38,7 @@ class ProductsController < ApplicationController
   end
 
   private
+
   def set_product
     @product = Product.find(params[:id])
   end

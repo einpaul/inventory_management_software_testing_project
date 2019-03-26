@@ -162,6 +162,7 @@
                     <th>
                       <i class="ion ion-trash-b"></i>
                     </th>
+                    <th>Actions</th>
                   </tr>
                   <% @suppliers.each do |supplier| %>
                   <tr>
@@ -173,6 +174,21 @@
                       <%= link_to supplier, method: :delete, data: { confirm: 'Are you sure?' } do %>
                       <i class="ion ion-trash-b"></i>
                       <% end %>
+                    </td>
+                    <td>
+                        <% if supplier.present? %>
+                          <% if supplier.active? || supplier.disabled? %>
+                            <%= link_to 'Revoke', revoke_supplier_path(supplier), method: :patch, data: { confirm: 'Are you sure?' },
+                                                                                  class: "btn btn-danger btn-xs" %>
+                              <% if supplier.active? %>
+                                  <%= link_to 'Disable', disable_supplier_path(supplier), method: :patch, data: { confirm: 'Are you sure?' },
+                                                                                          class: "btn btn-warning btn-xs" %>
+                              <% else %>
+                                  <%= link_to 'Activate', activate_supplier_path(supplier), method: :patch, class: "btn btn-success btn-xs" %>
+                              <% end %>
+                          <% end %>
+                        <% end %>
+
                     </td>
                   </tr>
                   <% end %>

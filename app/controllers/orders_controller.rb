@@ -26,13 +26,13 @@ class OrdersController < ApplicationController
     end
   end
 
-  def disable
+  def return
     purchased_qty = Order.find_by_id(params[:id]).quantity.to_i
     @purchased_product = Order.find_by_id(params[:id]).product
     @purchased_product.increment!(:remaining_quantity, purchased_qty)
     @current_user = current_user
     @order = Order.find_by_id(params[:id])
-    Order.disable(params[:id])
+    Order.return(params[:id])
     redirect_to :root
     flash[:notice] = "Product marked as returned. Thank you!"
 

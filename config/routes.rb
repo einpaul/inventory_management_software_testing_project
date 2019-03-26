@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
+  resources :transactions
   devise_for :users
 
   resources :categories
   resources :orders
-  resources :suppliers
+  resources :suppliers do
+    member do
+      patch 'disable'
+      patch 'revoke'
+      patch 'activate'
+    end
+  end
   resources :products
   resources :users
 
@@ -12,6 +19,6 @@ Rails.application.routes.draw do
   root 'orders#index'
 
   get 'renew/:id' => 'orders#renew'
-  get 'return/:id' => 'orders#disable'
+  get 'return/:id' => 'orders#return'
   get 'past_orders' => 'orders#old'
 end
