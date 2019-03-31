@@ -4,6 +4,8 @@ class Supplier < ApplicationRecord
   has_many :orders
   has_many :products, through: :orders
   has_many :transactions
+  has_many :reviews
+
 
   enum status: %w(active disabled revoked)
 

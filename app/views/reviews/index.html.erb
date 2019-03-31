@@ -1,0 +1,98 @@
+<body class="hold-transition skin-blue sidebar-mini">
+  <div class="wrapper">
+    <%= render 'layouts/header' %>
+    <div class="content-wrapper">
+
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          My Reviews
+        </h1>
+        <ol class="breadcrumb">
+          <li>
+            <a href="#">
+              <i class="fa fa-home"></i>
+              Home Page</a>
+          </li>
+          <li class="active">My reviews</li>
+        </ol>
+      </section>
+
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-10">
+            <!-- Main data table -->
+            <div class="box">
+
+              <!-- /.box-header -->
+              <div class="box-body">
+                <% if @reviews.empty? %>
+                  <h3>You do not have any reviews yet</h3>
+                <% else %>
+                  <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>
+                          <span class="label label-success">Product</span>/<span class="label label-warning">Supplier</span>
+                        </th>
+                        <th>Rating</th>
+                        <th>Review</th>
+                        <th>
+                          <i class="ion ion-edit"></i>
+                        </th>
+                        <th>
+                          <i class="ion ion-trash-b"></i>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @reviews.each do |review| %>
+                      <tr>
+                        <td>
+                          <% if review.product.present? %>
+                            <span class="label label-success"><%= review.product.try(:name) %></span>
+                          <% elsif review.supplier.present? %>
+                            <span class="label label-warning"><%= review.supplier.try(:name) %></span>
+                          <% end %>
+                        </td>
+                        <td><%= review.rating %></td>
+                        <td><%= review.body %></td>
+                        <td><%= link_to 'Edit', edit_review_path(review), class:"btn btn-primary btn-xs" %></td>
+                        <td><%= link_to 'Delete', review, method: :delete, data: { confirm: 'Are you sure you want to delete your review?' }, class:"btn btn-danger btn-xs" %></td>
+                      </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                <%end%>
+              </div>
+              <!-- /.box-body -->
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <%= render 'layouts/footer' %>
+  </div>
+  <script>
+    $(function () {
+      $("#example1").DataTable();
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false
+      });
+    });
+  </script>
+</body>
+
+
+
+
+
+
+
+
+

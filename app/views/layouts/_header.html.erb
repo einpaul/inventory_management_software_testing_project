@@ -47,36 +47,45 @@
           <span>Home Page</span>
         </a>
       </li>
-      <li>
-        <a href="<%= products_path %>">
-          <i class="fa fa-search"></i>
-          <span>Check Inventory</span>
-        </a>
-      </li>
-      <li>
-        <a href="<%= past_orders_path %>">
-          <i class="fa fa-history"></i>
-          <span>Past Orders</span>
-        </a>
-      </li>
-      <li>
-        <a href=" <%= new_product_path %>">
-          <i class="fa fa-plus"></i>
-          <span>Add Product</span>
-        </a>
-      </li>
-      <li>
-        <a href="<%= new_supplier_path %>">
-          <i class="fa fa-user-plus"></i>
-          <span>Add Supplier</span>
-        </a>
-      </li>
-      <li>
-        <a href="<%= transactions_path %>">
-          <i class="fa fa-history"></i>
-          <span>Transactions</span>
-        </a>
-      </li>
+      <% if current_user.customer? %>
+        <li>
+          <a href="<%= reviews_path %>">
+            <i class="fa fa-history"></i>
+            <span>My Reviews</span>
+          </a>
+        </li>
+      <% else %>
+        <li>
+          <a href="<%= products_path %>">
+            <i class="fa fa-search"></i>
+            <span>Check Inventory</span>
+          </a>
+        </li>
+        <li>
+          <a href="<%= past_orders_path %>">
+            <i class="fa fa-history"></i>
+            <span>Past Orders</span>
+          </a>
+        </li>
+        <li>
+          <a href=" <%= new_product_path %>">
+            <i class="fa fa-plus"></i>
+            <span>Add Product</span>
+          </a>
+        </li>
+        <li>
+          <a href="<%= new_supplier_path %>">
+            <i class="fa fa-user-plus"></i>
+            <span>Add Supplier</span>
+          </a>
+        </li>
+        <li>
+          <a href="<%= transactions_path %>">
+            <i class="fa fa-history"></i>
+            <span>Transactions</span>
+          </a>
+        </li>
+      <% end %>
     </ul>
   </section>
   <!-- /.sidebar -->
