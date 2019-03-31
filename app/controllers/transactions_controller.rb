@@ -1,5 +1,6 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: [:show, :edit, :update, :destroy]
+  before_action :check_supplier_status, only: [:create]
 
   def index
     @transactions = Transaction.all
@@ -11,7 +12,7 @@ class TransactionsController < ApplicationController
   def new
     @transaction = Transaction.new
     @products = Product.all
-    @suppliers = Supplier.all
+    @suppliers = Supplier.active
   end
 
   def edit

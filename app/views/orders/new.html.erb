@@ -47,7 +47,7 @@
                   </div>
                   <div class="form-group">
                     <label>Supplier</label>
-                    <%= f.select(:supplier_id, options_from_collection_for_select(@supplier, 'id', 'name'), { include_blank: true }, { class: 'form-control', required: true }) %>
+                    <%= f.select(:supplier_id, options_from_collection_for_select(@suppliers, 'id', 'name'), { include_blank: true }, { class: 'form-control', required: true }) %>
                   </div>
                   <%= f.number_field :product_id, :value => params[:product], :hidden => true %>
                 </div>

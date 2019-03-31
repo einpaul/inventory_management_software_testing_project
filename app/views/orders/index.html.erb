@@ -124,7 +124,7 @@
                         <%= order.supplier.name %>
                       </td>
                       <td>
-                        <%= link_to "", { :controller => :orders, :action => :disable, :id => order.id }, { class: "ion ion-log-in"} %>
+                        <%= link_to "", { :controller => :orders, :action => :return, :id => order.id }, { class: "ion ion-log-in"} %>
                       </td>
                       <td>
                         <%= link_to "", { :controller => :orders, :action => :renew, :id => order.id }, { class: "ion ion-loop"} %>
@@ -156,6 +156,7 @@
                     <th>Name</th>
                     <th>E-mail</th>
                     <th>Phone</th>
+                    <th>Status</th>
                     <th>
                       <i class="ion ion-edit"></i>
                     </th>
@@ -169,6 +170,17 @@
                     <td><%= supplier.name %></td>
                     <td><%= supplier.email %></td>
                     <td><%= supplier.phone %></td>
+                    <td>
+                      <% if supplier.active? %>
+                        <span class="label label-success"><%= supplier.status.try(:upcase) %></span>
+                      <% elsif supplier.disabled? %>
+                        <span class="label label-warning"><%= supplier.status.try(:upcase) %></span>
+                      <% else %>
+                        <span class="label label-danger"><%= supplier.status.try(:upcase) %></span>
+                      <% end %>
+                    </td>
+
+
                     <td><%= link_to "", edit_supplier_path(supplier), { class: "ion ion-edit"} %></td>
                     <td>
                       <%= link_to supplier, method: :delete, data: { confirm: 'Are you sure?' } do %>

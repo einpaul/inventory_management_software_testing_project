@@ -1,9 +1,10 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :check_supplier_status, only: [:create]
 
   def index
     @orders = Order.all
-    @suppliers = Supplier.all
+    @suppliers = Supplier.active
     @products = Product.all
     @active = Order.active?
     @expired = Order.expired?
@@ -44,10 +45,11 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new
-    @supplier = Supplier.all
+    @suppliers = Supplier.all
   end
 
   def create
+    # binding.pry
     if Product.find_by_id(params[:order][:product_id]).remaining_quantity >= params[:order][:quantity].to_i
       params[:order][:status] = true
       @order = Order.new(order_params)
@@ -89,6 +91,14 @@ class OrdersController < ApplicationController
     end
 
     def order_params
-      params.require(:order).permit(:quantity, :expire_at, :status, :item_id, :member_id)
+      params.require(:order).permit(:quantity, :expire_at, :status, :product_id, :supplier_id)
     end
+
 end
+
+
+
+
+
+
+
