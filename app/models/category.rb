@@ -1,4 +1,4 @@
 class Category < ApplicationRecord
-  #assocaitions
+  #associations
   has_many :products
 end

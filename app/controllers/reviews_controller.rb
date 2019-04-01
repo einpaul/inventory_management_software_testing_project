@@ -4,6 +4,7 @@ class ReviewsController < ApplicationController
 
   def index
     @reviews = current_user.reviews
+    authorize(@reviews)
   end
 
   def show
@@ -11,15 +12,18 @@ class ReviewsController < ApplicationController
 
   def new
     @review = Review.new
+    authorize(@review)
   end
 
   def edit
+    authorize(@review)
   end
 
   def create
     @current_user = current_user
     review_params_user = review_params.merge!(user_id: @current_user.id )
     @review = Review.new(review_params_user)
+    authorize(@review)
     if @review.save
       redirect_to :root, notice: 'Review was successfully created.'
       begin
@@ -32,6 +36,7 @@ class ReviewsController < ApplicationController
   end
 
   def update
+    authorize(@review)
     respond_to do |format|
       if @review.update(review_params)
         format.html { redirect_to reviews_path, notice: 'Review was successfully updated.' }
@@ -44,6 +49,7 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
+    authorize(@review)
     @review.destroy
     respond_to do |format|
       format.html { redirect_to reviews_url, notice: 'Review was successfully destroyed.' }

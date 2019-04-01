@@ -6,9 +6,11 @@ class UsersController < ApplicationController
   end
 
   def edit
+    authorize(@user)
   end
 
   def update
+    authorize(@user)
     if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)

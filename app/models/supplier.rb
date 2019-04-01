@@ -15,6 +15,13 @@ class Supplier < ApplicationRecord
 
   before_create :set_defaults
 
+  def average_rating_per_supplier
+    return 'No Rated Yet' if self.reviews.empty?
+    rating_total = self.reviews.sum(:rating)
+    reviews_count = self.reviews.count
+    average_rating = (rating_total / reviews_count).to_f
+  end
+
   private
 
   def set_defaults

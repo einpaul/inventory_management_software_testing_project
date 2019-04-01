@@ -3,20 +3,24 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.all
+    authorize(@products)
   end
 
   def new
     @product = Product.new
+    authorize(@product)
     @categories = Category.all
   end
 
   def edit
     @category = Category.all
+    authorize(@product)
   end
 
   def create
     params[:product][:remaining_quantity] = params[:product][:quantity]
     @product = Product.new(product_params)
+    authorize(@product)
     if @product.save
       redirect_to :root, notice: 'Product was successfully created.'
     else
@@ -25,6 +29,7 @@ class ProductsController < ApplicationController
   end
 
   def update
+    authorize(@product)
     if @product.update(product_params)
       redirect_to :root, notice: 'Product was successfully updated.'
     else
@@ -33,8 +38,13 @@ class ProductsController < ApplicationController
   end
 
   def destroy
+    authorize(@product)
     @product.destroy
     redirect_to products_url, notice: 'Product was successfully destroyed.'
+  end
+
+  def show
+
   end
 
   private

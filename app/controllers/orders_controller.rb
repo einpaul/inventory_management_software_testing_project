@@ -4,6 +4,7 @@ class OrdersController < ApplicationController
 
   def index
     @orders = Order.all
+    authorize(@orders)
     @suppliers = Supplier.active
     @products = Product.all
     @active = Order.active?
@@ -15,6 +16,7 @@ class OrdersController < ApplicationController
 
   def old
     @inactive = Order.inactive?
+    authorize(@inactive)
   end
 
   def renew
@@ -48,36 +50,15 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new
+    authorize(@order)
     @suppliers = Supplier.all
   end
-
-  # def create
-  #   # binding.pry
-  #   if Product.find_by_id(params[:order][:product_id]).remaining_quantity >= params[:order][:quantity].to_i
-  #     params[:order][:status] = true
-  #     @order = Order.new(order_params)
-  #     if @order.save
-  #       @current_user = current_user
-  #       @purchased_product = Product.find_by_id(params[:order][:product_id])
-  #       @purchased_product.decrement!(:remaining_quantity, params[:order][:quantity].to_i)
-  #       redirect_to :root, notice: 'Order was successfully created.'
-  #       begin
-  #         OrderMailer.delay.create_order(@order, @current_user).deliver
-  #       rescue Exception => e
-  #       end
-  #     else
-  #       render :new
-  #     end
-  #   else
-  #     flash[:alert] = 'The quantity you entered is not currently available'
-  #     redirect_to :back
-  #   end
-  # end
 
   def create
     # binding.pry
     params[:order][:status] = true
     @order = Order.new(order_params)
+    authorize(@order)
     if @order.save
       @current_user = current_user
       @purchased_product = Product.find_by_id(params[:order][:product_id])
@@ -94,6 +75,7 @@ class OrdersController < ApplicationController
   end
 
   def destroy
+    authorize(@order)
     purchased_qty = @order.quantity.to_i
     @purchased_product = @order.product
     @purchased_product.decrement!(:remaining_quantity, purchased_qty)
@@ -108,6 +90,19 @@ class OrdersController < ApplicationController
   end
 
   private
+
+    def check_supplier_status
+      return if params[:order][:supplier_id].blank?
+      @supplier = Supplier.find(params[:order][:supplier_id])
+      if @supplier.active?
+        true
+      else
+        flash[:alert] = "The supplier you selected is currently #{@supplier.status}."
+        false
+        redirect_to products_path
+      end
+    end
+
     def set_order
       @order = Order.find(params[:id])
     end

@@ -27,7 +27,7 @@
             <!-- small box -->
             <div class="small-box bg-aqua">
               <div class="inner">
-                <h3><%=@products.sum(:quantity)%></h3>
+                <h3><%=(@products.sum(:quantity) + @products.sum(:remaining_quantity))%></h3>
                 <p>Products Tracked</p>
               </div>
               <div class="icon">
@@ -67,7 +67,7 @@
             <div class="small-box bg-yellow">
               <div class="inner">
                 <h3><%= @expired.count %></h3>
-                <p>Expired Orders</p>
+                <p>Expired Products</p>
               </div>
               <div class="icon">
                 <i class="ion ion-android-time"></i>
@@ -142,7 +142,7 @@
                 <table class="table table-bordered table-hover">
                   <thead>
                     <tr>
-                      <th>Description</th>
+                      <th>Product</th>
                       <th>Qty</th>
                       <th>Expires At</th>
                       <th>Purchased From</th>
@@ -161,7 +161,7 @@
                     <% @active.each do |order| %>
                     <tr>
                       <td>
-                        <%= order.product.name %>
+                        <%= order.product.try(:name) %>
                       </td>
                       <td><%= order.quantity %></td>
                       <% if order.expire_at.strftime("%y:%m:%d") >= Date.today.strftime("%y:%m:%d") %>
@@ -220,7 +220,7 @@
                   </tr>
                   <% @suppliers.each do |supplier| %>
                   <tr>
-                    <td><%= supplier.name %></td>
+                    <td><%= link_to supplier.name, supplier_path(supplier.id) %></td>
                     <td><%= supplier.email %></td>
                     <td><%= supplier.phone %></td>
                     <td>

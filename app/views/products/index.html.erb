@@ -51,7 +51,7 @@
                     <tr>
                       <td><%= product.id %></td>
                       <td><%= product.category.name %></td>
-                      <td><%= product.name %></td>
+                      <td><%= link_to product.name, product_path(product.id) %></td>
                       <td><%= product.code %></td>
                       <td><%= product.description %></td>
                       <td><%= product.quantity %></td>

@@ -1,0 +1,23 @@
+en:
+  pundit:
+    default: "You have requested a page that you do not have access to."
+    product_policy:
+      index?: "You are not allowed to view this list of products."
+      show?: "You are not allowed to view the details of this product."
+      new?: "You are not allowed to add a product."
+      create?: "You are not allowed to create a bank."
+      edit?: "You are not allowed to edit this particular product."
+      update?: "You are not allowed to update this particular product."
+      destroy?: "You are not allowed to delete this particular product."
+    supplier_policy:
+      index?: "You are not allowed to view this list of suppliers."
+      show?: "You are not allowed to view the details of this supplier."
+      new?: "You are not allowed to add a supplier."
+      create?: "You are not allowed to create a supplier."
+      edit?: "You are not allowed to edit this particular supplier."
+      update?: "You are not allowed to update this particular supplier."
+      destroy?: "You are not allowed to delete this particular supplier."
+      disable?: "You are not authorized to disable this particular supplier."
+      revoke?: "You are not authorized to revoke this particular supplier."
+      activate?: "You are not authorized to activate this particular supplier."
+

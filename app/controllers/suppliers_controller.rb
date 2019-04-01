@@ -3,17 +3,23 @@ class SuppliersController < ApplicationController
 
   def index
     @suppliers = Supplier.all
+    authorize(@suppliers)
   end
 
   def new
     @supplier = Supplier.new
+    authorize(@supplier)
   end
 
   def edit
   end
 
+  def show
+  end
+
   def create
     @supplier = Supplier.new(supplier_params)
+    authorize(@supplier)
     if @supplier.save
       redirect_to :root, notice: 'Supplier was successfully created.'
     else
@@ -22,6 +28,7 @@ class SuppliersController < ApplicationController
   end
 
   def update
+    authorize(@supplier)
     if @supplier.update(supplier_params)
       redirect_to :root, notice: 'Supplier was successfully updated.'
     else
@@ -30,6 +37,7 @@ class SuppliersController < ApplicationController
   end
 
   def destroy
+    authorize(@supplier)
     if @supplier.orders.where(status: true).count == 0
       @supplier.destroy
       redirect_to :root, notice: 'Supplier was successfully destroyed.'
@@ -41,6 +49,7 @@ class SuppliersController < ApplicationController
 
   def disable
     @supplier = Supplier.find(params[:id])
+    authorize(@supplier)
     if @supplier.status == 'revoked'
       flash[:error] = 'You cannot disable a revoked Supplier'
     else
@@ -52,6 +61,7 @@ class SuppliersController < ApplicationController
 
   def revoke
     @supplier = Supplier.find(params[:id])
+    authorize(@supplier)
     @supplier.revoked!
     flash[:success] = I18n.t 'Supplier Revoked'
     redirect_to root_url
@@ -59,6 +69,7 @@ class SuppliersController < ApplicationController
 
   def activate
     @supplier = Supplier.find(params[:id])
+    authorize(@supplier)
     if @supplier.status == 'revoked'
       flash[:error] = 'You cannot activate a revoked Supplier'
     else

@@ -39,6 +39,7 @@ gem 'bootstrap-sass', '~> 3.4.1'
 gem 'jquery-rails'
 gem 'delayed_job'
 gem 'delayed_job_active_record'
+gem "pundit"
 
 
 
