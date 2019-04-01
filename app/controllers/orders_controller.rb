@@ -48,33 +48,52 @@ class OrdersController < ApplicationController
     @suppliers = Supplier.all
   end
 
+  # def create
+  #   # binding.pry
+  #   if Product.find_by_id(params[:order][:product_id]).remaining_quantity >= params[:order][:quantity].to_i
+  #     params[:order][:status] = true
+  #     @order = Order.new(order_params)
+  #     if @order.save
+  #       @current_user = current_user
+  #       @purchased_product = Product.find_by_id(params[:order][:product_id])
+  #       @purchased_product.decrement!(:remaining_quantity, params[:order][:quantity].to_i)
+  #       redirect_to :root, notice: 'Order was successfully created.'
+  #       begin
+  #         OrderMailer.delay.create_order(@order, @current_user).deliver
+  #       rescue Exception => e
+  #       end
+  #     else
+  #       render :new
+  #     end
+  #   else
+  #     flash[:alert] = 'The quantity you entered is not currently available'
+  #     redirect_to :back
+  #   end
+  # end
+
   def create
     # binding.pry
-    if Product.find_by_id(params[:order][:product_id]).remaining_quantity >= params[:order][:quantity].to_i
-      params[:order][:status] = true
-      @order = Order.new(order_params)
-      if @order.save
-        @current_user = current_user
-        @purchased_product = Product.find_by_id(params[:order][:product_id])
-        @purchased_product.decrement!(:remaining_quantity, params[:order][:quantity].to_i)
-        redirect_to :root, notice: 'Order was successfully created.'
-        begin
-          OrderMailer.delay.create_order(@order, @current_user).deliver
-        rescue Exception => e
-        end
-      else
-        render :new
+    params[:order][:status] = true
+    @order = Order.new(order_params)
+    if @order.save
+      @current_user = current_user
+      @purchased_product = Product.find_by_id(params[:order][:product_id])
+      @purchased_product.increment!(:remaining_quantity, params[:order][:quantity].to_i)
+      redirect_to :root, notice: 'Order was successfully created.'
+      begin
+        OrderMailer.delay.create_order(@order, @current_user).deliver
+      rescue Exception => e
       end
     else
-      flash[:alert] = 'The quantity you entered is not currently available'
-      redirect_to :back
+      flash[:alert] = 'Order was successfully created.'
+      render :new
     end
   end
 
   def destroy
     purchased_qty = @order.quantity.to_i
     @purchased_product = @order.product
-    @purchased_product.increment!(:remaining_quantity, purchased_qty)
+    @purchased_product.decrement!(:remaining_quantity, purchased_qty)
     @current_user = current_user
     @order.destroy
 
