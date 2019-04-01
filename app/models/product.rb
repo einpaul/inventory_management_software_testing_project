@@ -19,5 +19,4 @@ class Product < ApplicationRecord
     reviews_count = self.reviews.count
     average_rating = (rating_total / reviews_count).to_f
   end
-
 end

@@ -25,5 +25,4 @@ class ProductPolicy < ApplicationPolicy
   def destroy?
     user.manager?
   end
-
 end

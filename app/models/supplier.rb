@@ -6,7 +6,6 @@ class Supplier < ApplicationRecord
   has_many :transactions
   has_many :reviews
 
-
   enum status: %w(active disabled revoked)
 
   validates :name, presence: true

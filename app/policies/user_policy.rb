@@ -3,18 +3,18 @@
 class UserPolicy < ApplicationPolicy
 
   def new?
-
+    user.manager?
   end
 
   def create?
-
+    user.manager?
   end
 
   def edit?
-    user.id == record.id
+    user.manager?
   end
 
   def update?
-    user.id == record.id
+    user.manager?
   end
 end
