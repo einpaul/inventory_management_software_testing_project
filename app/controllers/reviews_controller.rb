@@ -26,10 +26,6 @@ class ReviewsController < ApplicationController
     authorize(@review)
     if @review.save
       redirect_to :root, notice: 'Review was successfully created.'
-      begin
-        OrderMailer.delay.create_order(@order, @current_user).deliver
-      rescue Exception => e
-      end
     else
       render :new
     end

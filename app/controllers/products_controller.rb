@@ -8,7 +8,6 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
-    authorize(@product)
     @categories = Category.all
   end
 

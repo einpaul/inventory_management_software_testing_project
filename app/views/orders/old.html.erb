@@ -42,7 +42,7 @@
                     <% @inactive.each do |order| %>
                     <tr>
                       <td><%= order.id %></td>
-                      <td><%= order.product.category %></td>
+                      <td><%= order.product.category.name %></td>
                       <td><%= order.product.name %></td>
                       <td><%= order.quantity %></td>
                       <td><%= order.created_at.strftime("%d/%m/%Y, %H:%M") %></td>

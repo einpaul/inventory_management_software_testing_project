@@ -8,7 +8,6 @@ class SuppliersController < ApplicationController
 
   def new
     @supplier = Supplier.new
-    authorize(@supplier)
   end
 
   def edit
