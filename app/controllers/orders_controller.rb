@@ -8,6 +8,9 @@ class OrdersController < ApplicationController
     @products = Product.all
     @active = Order.active?
     @expired = Order.expired?
+    @reviews = Review.all
+    @bad_reviews = Review.where('rating <= ?', 3)
+    @good_reviews = Review.where('rating > ?', 3)
   end
 
   def old

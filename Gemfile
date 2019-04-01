@@ -37,6 +37,9 @@ gem 'pg', '~> 0.18'
 gem 'devise'
 gem 'bootstrap-sass', '~> 3.4.1'
 gem 'jquery-rails'
+gem 'delayed_job'
+gem 'delayed_job_active_record'
+
 
 
 group :development, :test do

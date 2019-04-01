@@ -53,7 +53,7 @@
             <!-- small box -->
             <div class="small-box bg-red">
               <div class="inner">
-                <h3><%= (@products.sum(:quantity) - @products.sum(:remaining_quantity)) %></h3>
+                <h3><%= (@products.sum(:remaining_quantity) - @products.sum(:quantity)).abs %></h3>
                 <p>Products Unavailable</p>
               </div>
               <div class="icon">
@@ -75,6 +75,59 @@
             </div>
           </div>
           <!-- ./col -->
+
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+              <div class="inner">
+                <h3><%= @reviews.count %></h3>
+                <p>Review Count</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-android-time"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+              <div class="inner">
+                <h3><%= @bad_reviews.count%></h3>
+                <p>Below Average Review Count</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-alert"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+              <div class="inner">
+                <h3><%= @reviews.average_product_rating %></h3>
+                <p>Average Product Rating</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-checkmark"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+              <div class="inner">
+                <h3><%= @reviews.average_supplier_rating %></h3>
+                <p>Average Supplier Rating</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-checkmark"></i>
+              </div>
+            </div>
+          </div>
+
         </div>
         <!-- /.row -->
 
@@ -91,7 +144,7 @@
                     <tr>
                       <th>Description</th>
                       <th>Qty</th>
-                      <th>Return By</th>
+                      <th>Expires At</th>
                       <th>Purchased From</th>
                       <th>
                         <i class="ion ion-log-in"></i>

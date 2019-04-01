@@ -1,13 +1,13 @@
 <p>A new borrow order has been placed in Inventorious.</p>
 <br>
-<b>Item name:</b> <%= @order.product.name%>
+<b>Product name:</b> <%= @order.product.name%>
 <br>
 <b>Quantity:</b> <%= @order.quantity%>
 <br>
 <b>Return by:</b> <%= @order.expire_at%>
 <br>
-<b>Member name:</b> <%= @order.supplier.name%>
+<b>Supplier name:</b> <%= @order.supplier.name%>
 <br>
-<b>Created by user:</b> <%= @user.name%>, with IP: <%= @user.current_sign_in_ip%>
+<b>Created by user:</b> <%= @user.name%>
 
 <p>These products are now available</p>
