@@ -62,7 +62,7 @@ class SuppliersController < ApplicationController
     @supplier = Supplier.find(params[:id])
     authorize(@supplier)
     @supplier.revoked!
-    flash[:success] = I18n.t 'Supplier Revoked'
+    flash[:success] = 'Supplier Revoked'
     redirect_to root_url
   end
 

@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
   def index
     @orders = Order.all
     authorize(@orders)
-    @suppliers = Supplier.active
+    @suppliers = Supplier.all
     @products = Product.all
     @active = Order.active?
     @expired = Order.expired?
@@ -54,7 +54,6 @@ class OrdersController < ApplicationController
   end
 
   def create
-    # binding.pry
     params[:order][:status] = true
     @order = Order.new(order_params)
     authorize(@order)
