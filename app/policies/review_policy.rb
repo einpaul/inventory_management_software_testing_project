@@ -22,7 +22,7 @@ class ReviewPolicy < ApplicationPolicy
     (user.customer? && user.id == record.user.id)
   end
 
-  def index
-    user.customer? || user.manager? || user.sales_person?
-  end
+  # def index
+  #   user.customer? || user.manager? || user.sales_person?
+  # end
 end

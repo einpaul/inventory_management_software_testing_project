@@ -5,6 +5,8 @@ class Review < ApplicationRecord
   belongs_to :supplier, optional: true
   belongs_to :user, optional: true
 
+  validates :rating, presence: true
+  validates :body, presence: true
 
   def self.average_product_rating
     product_ratings = Review.where.not(product_id: nil)

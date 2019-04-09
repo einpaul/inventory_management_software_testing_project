@@ -3,7 +3,7 @@ class ReviewsController < ApplicationController
 
   def index
     @reviews = current_user.reviews
-    authorize(@reviews)
+    # authorize(@reviews)
   end
 
   def show
