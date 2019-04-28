@@ -3,7 +3,7 @@ class SuppliersController < ApplicationController
 
   def index
     @suppliers = Supplier.all
-    authorize(@suppliers)
+    # authorize(@suppliers)
   end
 
   def new

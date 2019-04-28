@@ -67,7 +67,7 @@ class OrdersController < ApplicationController
       rescue Exception => e
       end
     else
-      flash[:alert] = 'Order was successfully created.'
+      flash[:alert] = 'Order creation was unsucessfull.'
       render :new
     end
   end
@@ -97,7 +97,6 @@ class OrdersController < ApplicationController
       else
         flash[:alert] = "The supplier you selected is currently #{@supplier.status}."
         false
-        redirect_to products_path
       end
     end
 

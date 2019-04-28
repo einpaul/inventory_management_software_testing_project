@@ -133,8 +133,9 @@ RSpec.describe ReviewsController, type: :controller do
 
     context 'Deleting Review' do
       it 'deletes review if action is by owner' do
-        delete :destroy, params: { id: @review }
-        expect(response.status).to eq 200
+        binding.pry
+        expect { delete :destroy, params: { id: @review } }.to change(Review, :count).by(-1)
+      end
 
       it 'does not allow to delete the review if user is manager' do
         sign_out(@customer_user)
@@ -152,6 +153,6 @@ RSpec.describe ReviewsController, type: :controller do
       end
     end
   end
-
 end
+
 

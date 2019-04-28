@@ -8,6 +8,7 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'shoulda/matchers'
 require 'simplecov'
+require 'devise'
 
 # Start SimpleCov
 SimpleCov.start

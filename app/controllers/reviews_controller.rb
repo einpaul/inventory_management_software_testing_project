@@ -45,6 +45,8 @@ class ReviewsController < ApplicationController
 
   def destroy
     authorize(@review)
+    binding.pry
+
     @review.destroy
     respond_to do |format|
       format.html { redirect_to reviews_url, notice: 'Review was successfully destroyed.' }
