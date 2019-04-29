@@ -31,7 +31,7 @@ RSpec.describe SuppliersController, type: :controller do
     end
 
     context "with invalid attributes" do
-      it 'does not save the new review in the database' do
+      it 'does not save the new supplier in the database' do
         supplier_params = { supplier: FactoryGirl.attributes_for(:supplier, name: nil) }
         expect { post :create, params: supplier_params }.to_not change(Supplier, :count)
       end

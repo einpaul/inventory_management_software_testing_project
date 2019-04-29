@@ -25,38 +25,61 @@ RSpec.describe ProductsController, type: :controller do
     end
   end
 
+  describe'GET #edit' do
+    before do
+      @product = FactoryGirl.create(:product, category: @catgeory)
+    end
+
+    it 'assigns the requested product to @product' do
+      get :edit, params: { id: @product }
+      expect(assigns(:product)).to eq @product
+    end
+    it 'renders the :edit template' do
+      get :edit, params: { id: @product }
+      expect(response).to render_template :edit
+    end
+  end
+
   describe "POST #create" do
     context "with valid attributes" do
+      before do
+        @product_factory_attrs =  FactoryGirl.attributes_for(:product, category_id: @catgeory.id)
+      end
+
       it "saves the new product in the database" do
-        expect { post :create, params: { product: FactoryGirl.attributes_for(:product) }}.to change(Product, :count).by(1)
+        expect { post :create, params: { product: @product_factory_attrs }}.to change(Product, :count).by(1)
       end
 
       it 'redirects to manager home' do
-        post :create, params: { product: FactoryGirl.attributes_for(:product, category: @catgeory) }
+        post :create, params: { product: @product_factory_attrs }
         expect(response).to redirect_to root_path
       end
 
       it 'the created product gets assigned to the category' do
-        post :create, params: { product: FactoryGirl.attributes_for(:product, category: @catgeory) }
+        post :create, params: { product: @product_factory_attrs }
         expect(Product.last.category).to eq @catgeory
       end
 
       it 'will not allow to create product if user is NOT manager' do
         sign_out(@manager_user)
         sign_in(@customer_user, scope: :user)
-        post :create, params: { product: FactoryGirl.attributes_for(:product, category: @catgeory) }
+        post :create, params: { product: @product_factory_attrs }
         expect(response).to eq @response
       end
     end
 
     context "with invalid attributes" do
+      before do
+        @invalid_product_factory_attrs =  FactoryGirl.attributes_for(:product, category: @catgeory, name: nil)
+      end
+
       it 'does not save the new product in the database' do
-        product_params = { product: FactoryGirl.attributes_for(:product, name: nil) }
+        product_params = { product: @invalid_product_factory_attrs }
         expect { post :create, params: product_params }.to_not change(Product, :count)
       end
 
       it 're-renders the :new template' do
-        post :create, params: { product: FactoryGirl.attributes_for(:product, rating: nil) }
+        post :create, params: { product: @invalid_product_factory_attrs }
         expect(response).to render_template :new
       end
     end
@@ -65,25 +88,32 @@ RSpec.describe ProductsController, type: :controller do
   describe 'PATCH #update' do
     before do
       @product = FactoryGirl.create :product, category: @catgeory
+      @product_attrs = FactoryGirl.attributes_for(:product, category: @catgeory)
     end
+
    context 'valid attributes' do
+
+    before do
+      @product_valid_update_attrs = FactoryGirl.attributes_for(:product, name: 'toothpaste', quantity: 20, category: @catgeory)
+    end
+
      it 'locates the requested @product' do
-      patch :update, params: { id: @product, product: FactoryGirl.attributes_for(:product, category: @catgeory) }
+      patch :update, params: { id: @product, product: @product_attrs }
       expect(assigns(:product)).to eq(@product)
      end
 
     it 'changes @product\'s attributes' do
       patch :update, params: {
         id: @product,
-        product: FactoryGirl.attributes_for(:product, name: 'toothpaste', quantity: 20, category: @catgeory)
+        product: @product_valid_update_attrs
       }
       @product.reload
       expect(@product.name).to eq('toothpaste')
       expect(@product.quantity).to eq(20)
     end
 
-    it 'redirects to the updated product' do
-      patch :update, params: { id: @product, product: FactoryGirl.attributes_for(:product, category: @catgeory) }
+    it 'redirects to the root path' do
+      patch :update, params: { id: @product, product: @product_valid_update_attrs }
       expect(response).to redirect_to root_path
     end
 
@@ -92,22 +122,26 @@ RSpec.describe ProductsController, type: :controller do
       sign_in(@customer_user, scope: :user)
       patch :update, params: {
         id: @product,
-        product: FactoryGirl.attributes_for(:product, quantity: 20, name: 'Mac', category: @catgeory)
+        product: @product_valid_update_attrs
       }
       expect(response).to eq @response
     end
    end
 
    context 'invalid attributes' do
+    before do
+      @product_invalid_update_attrs = FactoryGirl.attributes_for(:product, name: 'Mac', quantity: nil, category: @catgeory)
+    end
+
     it 'locates the requested @product' do
-      patch :update, params: { id: @product, product: FactoryGirl.attributes_for(:product, category: @catgeory) }
+      patch :update, params: { id: @product, product: @product_attrs }
       expect(assigns(:product)).to eq(@product)
     end
 
     it 'does not change @product\'s attributes' do
       patch :update, params: {
         id: @product,
-        product: FactoryGirl.attributes_for(:product, quantity: nil, name: 'Mac', category: @catgeory)
+        product: @product_invalid_update_attrs
       }
       @product.reload
       expect(@product.quantity).to eq(200)
@@ -117,7 +151,7 @@ RSpec.describe ProductsController, type: :controller do
     it 're-renders the edit method' do
       patch :update, params: {
           id: @product,
-          product: FactoryGirl.attributes_for(:product, quantity: nil, name: 'Mac', category: @catgeory)
+          product: @product_invalid_update_attrs
        }
        expect(response).to render_template :edit
     end
@@ -141,6 +175,4 @@ RSpec.describe ProductsController, type: :controller do
       end
     end
   end
-
-
 end

@@ -9,6 +9,9 @@ require 'rspec/rails'
 require 'shoulda/matchers'
 require 'simplecov'
 require 'devise'
+require 'support/fixture_helpers'
+Dir["/spec/fixtures/*.rb"].each {|file| require file }
+
 
 # Start SimpleCov
 SimpleCov.start

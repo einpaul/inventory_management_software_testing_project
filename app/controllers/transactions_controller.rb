@@ -33,6 +33,7 @@ class TransactionsController < ApplicationController
       @transacted_product.decrement!(:remaining_quantity, params[:transaction][:quantity].to_i)
       redirect_to transactions_path, notice: 'Transaction was successfully created.'
     else
+      flash[:alert] = 'Transaction creation was unsucessfull.'
       render :new
     end
   end
