@@ -1,0 +1,51 @@
+{
+
+  "factory_supplier" : {
+
+                           "name" : "Apple",
+                           "email" : "apple@gmail.com",
+                           "phone" : 986986456,
+                           "status" : "active"
+                      },
+
+  "inactive_supplier" :  {
+
+                           "name" : "Apple",
+                           "email" : "apple@gmail.com",
+                           "phone" : 986986456,
+                           "status" : "revoked"
+
+                         },
+
+  "invalid_factory_attrs" : {
+
+                           "name" : null,
+                           "email" : "apple@gmail.com",
+                           "phone" : 986986456,
+                           "status" : "active"
+                      },
+  "valid_update_factory_attributes" : {
+
+                           "name" : "Colgate",
+                           "email" : "apple@gmail.com",
+                           "phone" : "897987564",
+                           "status" : "active"
+                      },
+
+  "invalid_update_factory_attributes" : {
+
+                           "name" : null,
+                           "email" : "apple@gmail.com",
+                           "phone" : "897987564",
+                           "status" : "active"
+                      },
+
+  "supplier_mailer" : {
+
+                           "name" : "Colgate",
+                           "email" : "apple@gmail.com",
+                           "phone" : "897987564",
+                           "status" : "active"
+                      }
+
+}

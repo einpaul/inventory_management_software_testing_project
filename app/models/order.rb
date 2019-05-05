@@ -5,6 +5,7 @@ class Order < ApplicationRecord
 
   validates :quantity, presence: true, numericality: true
   # validates :expire_at, presence: true
+  # validates :product_id, presence: true
 
   def self.active?
     Order.where(status: true)

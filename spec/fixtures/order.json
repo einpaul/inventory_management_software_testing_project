@@ -1,0 +1,20 @@
+{
+
+  "order_factory_attributes" : {
+                                  "quantity" : 200,
+                                  "status" : true,
+                                  "expire_at" : "2020-08-18"
+                               },
+
+   "invalid_order_factory_attributes" :  {
+                                             "quantity" : null,
+                                             "status" : true,
+                                             "expire_at" : "2020-08-18"
+                                      },
+
+    "order_mailer_attrs" :         {
+                                             "quantity" : "200",
+                                             "status" : true,
+                                             "expire_at" : "2020-08-18"
+                                      }
+}

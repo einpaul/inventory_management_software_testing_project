@@ -1,10 +1,11 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
+require 'support/fixture_helpers'
+data = read_fixture_file('order.json')
+
 FactoryGirl.define do
   factory :order do
-    quantity 200
-    status 'true'
-    expire_at Faker::Date.between(2.years.ago, Date.today)
-    product_id 1
-    supplier_id 1
+    quantity data["order_factory_attributes"]["quantity"]
+    status data["order_factory_attributes"]["status"]
+    expire_at data["order_factory_attributes"]["expire_at"]
   end
 end

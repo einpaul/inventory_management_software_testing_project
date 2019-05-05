@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   resources :reviews
   resources :transactions
-  devise_for :users
+  devise_for :users, controllers: {
+                            sessions: 'users/sessions',
+                            registrations: 'users/registrations'
+                          }
 
   resources :categories
   resources :orders

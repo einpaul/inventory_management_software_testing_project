@@ -28,5 +28,4 @@ class OrderMailer < ApplicationMailer
 
     mail to: @order.supplier.email, subject: "An order regarding " + @order.quantity + " product(s) ordered by " + @order.supplier.name + " has been canceled from " + @user.name
   end
-
 end

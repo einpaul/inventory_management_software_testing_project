@@ -1,0 +1,15 @@
+{
+
+    "transaction_factory_attrs" : {
+
+                                      "quantity" :  150,
+                                      "transaction_id" : "213wd324rc34r3c34"
+                                },
+
+     "invalid_transaction_factory_attributes" : {
+
+                                      "quantity" :  null,
+                                      "transaction_id" : "213wd324rc34r3c34"
+                                }
+
+}

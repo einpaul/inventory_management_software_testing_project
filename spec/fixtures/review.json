@@ -1,0 +1,25 @@
+{
+
+  "review_factory_attrs" : {
+
+                               "rating" : 5,
+                               "body" : "Super"
+                          },
+
+  "invalid_review_attributes" : {
+
+                                 "rating" : null,
+                                 "body" : "Super"
+                            },
+
+  "valid_review_update_attributes" : {
+
+                                 "rating" : 2,
+                                 "body" : "maddness"
+                            },
+  "invalid_review_update_attributes" : {
+
+                                 "rating" : null,
+                                 "body" : "Super!"
+                            }
+}

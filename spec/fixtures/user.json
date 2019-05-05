@@ -1,0 +1,54 @@
+{
+  "customer_user": {
+
+                          "email": "customer@gmail.com",
+                          "name" : "Mark Andrews",
+                          "password" : "foobar123",
+                          "password_confirmation" : "foobar123",
+                          "role" : "customer"
+                    },
+
+  "manager_user": {
+
+                          "email": "manager@gmail.com",
+                          "name" : "Philip Ninan",
+                          "password" : "foobar123",
+                          "password_confirmation" : "foobar123",
+                          "role" : "manager"
+
+
+                    },
+
+  "factory_user": {
+
+                          "email": "ben123@gmail.com",
+                          "name" : "Ben Affleck",
+                          "password" : "foobar123",
+                          "password_confirmation" : "foobar123",
+                          "role" : "manager"
+
+
+                    },
+
+  "review_deleting_user": {
+
+                          "email": "review_deleter@gmail.com",
+                          "name" : "Tony",
+                          "password" : "foobar123",
+                          "password_confirmation" : "foobar123",
+                          "role" : "customer"
+
+
+                    },
+  "mailer_user": {
+
+                          "email": "lucas@email.com",
+                          "name" : "Lucas",
+                          "password" : "password",
+                          "password_confirmation" : "password",
+                          "role" : "manager"
+
+                    }
+
+}
+

@@ -1,15 +1,26 @@
 require 'rails_helper'
+require 'support/fixture_helpers'
+
 # frozen_string_literal: true
+
 RSpec.describe OrdersController, type: :controller do
 
   before do
-    @customer_user = FactoryGirl.create :user, role: 'customer'
-    @manager_user = FactoryGirl.create :user, role: 'manager', email: 'manager123@gmail.com'
+    @user_data = read_fixture_file('user.json')
+    @customer_user = FactoryGirl.create :user,
+                                        email: @user_data["customer_user"]["email"],
+                                        role: @user_data["customer_user"]["role"]
+
+    @manager_user = FactoryGirl.create :user,
+                                        role: @user_data["manager_user"]["role"],
+                                        email: @user_data["manager_user"]["email"]
     @catgeory = FactoryGirl.create :category
     @product = FactoryGirl.create :product, category: @catgeory
     @supplier = FactoryGirl.create :supplier
     sign_in(@manager_user, scope: :user)
     @response = "You have requested a page that you do not have access to."
+    @order_data = read_fixture_file('order.json')
+    @supplier_data = read_fixture_file('supplier.json')
   end
 
   describe 'GET #index' do
@@ -33,7 +44,7 @@ RSpec.describe OrdersController, type: :controller do
 
       before do
         @order_factory_attributes = FactoryGirl.attributes_for(:order, product_id: @product.id,
-                                                                          supplier_id: @supplier.id)
+                                                                          supplier_id: @supplier.id )
       end
       it "saves the new Order in the database" do
         expect { post :create, params: { order: @order_factory_attributes }}.to change(Order, :count).by(1)
@@ -71,8 +82,10 @@ RSpec.describe OrdersController, type: :controller do
 
     context "with invalid attributes" do
        before do
-        @invalid_order_factory_attributes = FactoryGirl.attributes_for(:order, quantity: nil, product_id: @product.id,
-                                                                          supplier_id: @supplier.id )
+        @invalid_order_factory_attributes = FactoryGirl.attributes_for(:order,
+                                                                        quantity: @order_data["invalid_order_factory_attributes"]["quantity"],
+                                                                        product_id: @product.id,
+                                                                        supplier_id: @supplier.id )
       end
       it 'does not save the new order in the database' do
         order_params = { order: @invalid_order_factory_attributes }
@@ -87,13 +100,16 @@ RSpec.describe OrdersController, type: :controller do
 
     context 'supplier status' do
       before do
-        @inactive_supplier = FactoryGirl.create :supplier, status: 'revoked'
-        @invalid_supplier_order_params = { order: FactoryGirl.attributes_for(:order, quantity: nil, product_id: @product.id,
-                                                                          supplier_id: @inactive_supplier.id) }
+        @inactive_supplier = FactoryGirl.create :supplier
+        @inactive_supplier.update_attributes(status: @supplier_data["inactive_supplier"]["status"])
+        @invalid_supplier_order_params = { order: FactoryGirl.attributes_for(:order,
+                                                                              quantity:  @order_data["invalid_order_factory_attributes"]["quantity"],
+                                                                              product_id: @product.id,
+                                                                              supplier_id: @inactive_supplier.id) }
       end
 
       it 'does not create order if supplier is NOT active' do
-         expect { post :create, params: @invalid_supplier_order_params }.to_not change(Order, :count)
+        expect { post :create, params: @invalid_supplier_order_params }.to_not change(Order, :count)
       end
 
       it 'redirects to new template with error message if supplier is NOT active' do

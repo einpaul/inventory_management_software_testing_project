@@ -3,12 +3,19 @@ require 'rails_helper'
 RSpec.describe ProductsController, type: :controller do
 
   before do
-    @customer_user = FactoryGirl.create :user, role: 'customer'
-    @manager_user = FactoryGirl.create :user, role: 'manager', email: 'manager123@gmail.com'
+    @user_data = read_fixture_file('user.json')
+    @customer_user = FactoryGirl.create :user,
+                                        email: @user_data["customer_user"]["email"],
+                                        role: @user_data["customer_user"]["role"]
+
+    @manager_user = FactoryGirl.create :user,
+                                        role: @user_data["manager_user"]["role"],
+                                        email: @user_data["manager_user"]["email"]
     @catgeory = FactoryGirl.create :category
     @supplier = FactoryGirl.create :supplier
     sign_in(@manager_user, scope: :user)
     @response = "You have requested a page that you do not have access to."
+    @product_data = read_fixture_file('product.json')
   end
 
    describe 'GET #index' do
@@ -70,7 +77,9 @@ RSpec.describe ProductsController, type: :controller do
 
     context "with invalid attributes" do
       before do
-        @invalid_product_factory_attrs =  FactoryGirl.attributes_for(:product, category: @catgeory, name: nil)
+        @invalid_product_factory_attrs =  FactoryGirl.attributes_for(:product,
+                                                                      category: @catgeory,
+                                                                      name: @product_data["invalid_product_factory_attrs"]["name"])
       end
 
       it 'does not save the new product in the database' do
@@ -85,6 +94,32 @@ RSpec.describe ProductsController, type: :controller do
     end
   end
 
+  describe 'GET #show' do
+    before do
+      @product = FactoryGirl.create(:product, category: @catgeory)
+    end
+
+    it 'assigns the requested product to @product' do
+      get :show, params: { id: @product }
+      assert_equal @product, assigns(:product)
+    end
+
+    it 'renders the #show view' do
+      get :show, params: { id: @product }
+      expect(response).to render_template :show
+    end
+
+    it 'shows customer reviews only pertaining to the chosen product' do
+      review1 = FactoryGirl.create(:review, product: @product, user: @customer_user )
+      review2 = FactoryGirl.create(:review, product: @product, user: @customer_user )
+      new_product = FactoryGirl.create :product, category: @catgeory
+      new_review = FactoryGirl.create(:review, product: new_product, user: @customer_user )
+      get :show, params: { id: @product }
+      expect(@product.reviews).to eq([review1, review2].sort)
+      expect(@product.reviews).to_not eq([new_review].sort)
+    end
+  end
+
   describe 'PATCH #update' do
     before do
       @product = FactoryGirl.create :product, category: @catgeory
@@ -94,7 +129,10 @@ RSpec.describe ProductsController, type: :controller do
    context 'valid attributes' do
 
     before do
-      @product_valid_update_attrs = FactoryGirl.attributes_for(:product, name: 'toothpaste', quantity: 20, category: @catgeory)
+      @product_valid_update_attrs = FactoryGirl.attributes_for(:product,
+                                                                name: @product_data["product_valid_update_attrs"]["name"],
+                                                                quantity: @product_data["product_valid_update_attrs"]["quantity"],
+                                                                category: @catgeory)
     end
 
      it 'locates the requested @product' do
@@ -108,8 +146,8 @@ RSpec.describe ProductsController, type: :controller do
         product: @product_valid_update_attrs
       }
       @product.reload
-      expect(@product.name).to eq('toothpaste')
-      expect(@product.quantity).to eq(20)
+      expect(@product.name).to eq(@product_data["product_valid_update_attrs"]["name"])
+      expect(@product.quantity).to eq(@product_data["product_valid_update_attrs"]["quantity"])
     end
 
     it 'redirects to the root path' do
@@ -130,7 +168,10 @@ RSpec.describe ProductsController, type: :controller do
 
    context 'invalid attributes' do
     before do
-      @product_invalid_update_attrs = FactoryGirl.attributes_for(:product, name: 'Mac', quantity: nil, category: @catgeory)
+      @product_invalid_update_attrs = FactoryGirl.attributes_for(:product,
+                                                                  name: @product_data["product_invalid_update_attrs"]["name"],
+                                                                  quantity: @product_data["product_invalid_update_attrs"]["quantity"],
+                                                                  category: @catgeory)
     end
 
     it 'locates the requested @product' do
@@ -144,8 +185,8 @@ RSpec.describe ProductsController, type: :controller do
         product: @product_invalid_update_attrs
       }
       @product.reload
-      expect(@product.quantity).to eq(200)
-      expect(@product.name).to_not eq('Mac')
+      expect(@product.quantity).to eq(@product_data["factory_product"]["quantity"])
+      expect(@product.name).to_not eq(@product_data["product_invalid_update_attrs"]["name"])
     end
 
     it 're-renders the edit method' do

@@ -1,0 +1,52 @@
+{
+
+  "factory_product" : {
+
+                           "name" : "Macbook",
+                            "quantity" : 200 ,
+                            "remaining_quantity" : 200,
+                            "code" :  "MACB13DD",
+                            "description" : "Sleek Product"
+
+                    },
+
+
+   "invalid_product_factory_attrs" : {
+
+                                    "name" : null,
+                                    "quantity" : 200 ,
+                                    "remaining_quantity" : 200,
+                                    "code" :  "MACB13DD",
+                                    "description" : "Sleek Product"
+                              },
+
+
+   "product_valid_update_attrs" : {
+
+                                    "name" : "toothpaste",
+                                    "quantity" : 20 ,
+                                    "remaining_quantity" : 200,
+                                    "code" :  "MACB13DD",
+                                    "description" : "Sleek Product"
+                              },
+
+
+   "product_invalid_update_attrs" : {
+
+                                    "name" : "Mac",
+                                    "quantity" : null ,
+                                    "remaining_quantity" : 200,
+                                    "code" :  "MACB13DD",
+                                    "description" : "Sleek Product"
+                              },
+
+   "product_for_mailer" : {
+
+                                    "name" : "Mac",
+                                    "quantity" : 450 ,
+                                    "remaining_quantity" : 200,
+                                    "code" :  "MACB13DD",
+                                    "description" : "Sleek Product"
+                              }
+
+}

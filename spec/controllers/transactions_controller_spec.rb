@@ -2,13 +2,21 @@ require 'rails_helper'
 # frozen_string_literal: true
 RSpec.describe TransactionsController, type: :controller do
   before do
-    @customer_user = FactoryGirl.create :user, role: 'customer'
-    @manager_user = FactoryGirl.create :user, role: 'manager', email: 'manager123@gmail.com'
+    @user_data = read_fixture_file('user.json')
+    @customer_user = FactoryGirl.create :user,
+                                        email: @user_data["customer_user"]["email"],
+                                        role: @user_data["customer_user"]["role"]
+
+    @manager_user = FactoryGirl.create :user,
+                                        role: @user_data["manager_user"]["role"],
+                                        email: @user_data["manager_user"]["email"]
     @catgeory = FactoryGirl.create :category
     @product = FactoryGirl.create :product, category: @catgeory
     @supplier = FactoryGirl.create :supplier
     sign_in(@manager_user, scope: :user)
     @response = "You have requested a page that you do not have access to."
+    @supplier_data = read_fixture_file('supplier.json')
+    @transaction_data = read_fixture_file('transaction.json')
   end
 
   describe "POST #create" do
@@ -53,26 +61,30 @@ RSpec.describe TransactionsController, type: :controller do
 
     context "with invalid attributes" do
       before do
-        @transaction_factory_attributes = FactoryGirl.attributes_for(:transaction, supplier_id: @supplier.id,
-                                                                               product_id: @product.id, quantity: nil)
+        @invalid_transaction_factory_attributes = FactoryGirl.attributes_for(:transaction,
+                                                                      supplier_id: @supplier.id,
+                                                                      product_id: @product.id,
+                                                                      quantity: @transaction_data["invalid_transaction_factory_attributes"]["quantity"])
       end
 
       it 'does not save the new transaction in the database' do
-        transaction_params = { transaction: @transaction_factory_attributes }
+        transaction_params = { transaction: @invalid_transaction_factory_attributes }
         expect { post :create, params: transaction_params }.to_not change(Transaction, :count)
       end
 
       it 're-renders the :new template' do
-        post :create, params: { transaction: @transaction_factory_attributes }
+        post :create, params: { transaction: @invalid_transaction_factory_attributes }
         expect(response).to render_template :new
       end
     end
 
     context 'supplier status' do
        before do
-        @inactive_supplier = FactoryGirl.create :supplier, status: 'revoked'
-        @transaction_supplier_status_attrs = { transaction: FactoryGirl.attributes_for(:transaction, quantity: 275, transaction_id: 'wed34rec324vfv',
-                                                                      product: @product, supplier: @inactive_supplier) }
+       @inactive_supplier = FactoryGirl.create :supplier
+        @inactive_supplier.update_attributes(status: @supplier_data["inactive_supplier"]["status"])
+        @transaction_supplier_status_attrs = { transaction: FactoryGirl.attributes_for(:transaction,
+                                                                                      product: @product,
+                                                                                      supplier: @inactive_supplier) }
       end
 
       it 'does not create transaction if supplier is NOT active' do
@@ -126,8 +138,9 @@ RSpec.describe TransactionsController, type: :controller do
 
    context 'valid attributes' do
       before do
-        @transaction_valid_update_attrs = FactoryGirl.attributes_for(:transaction, quantity: 275, transaction_id: 'wed34rec324vfv',
-                                                                      product: @product, supplier: @supplier)
+        @transaction_valid_update_attrs = FactoryGirl.attributes_for(:transaction,
+                                                                      product: @product,
+                                                                      supplier: @supplier)
       end
 
      it 'locates the requested @transaction' do
@@ -141,8 +154,8 @@ RSpec.describe TransactionsController, type: :controller do
         transaction: @transaction_valid_update_attrs
       }
       @transaction.reload
-      expect(@transaction.quantity).to eq(275)
-      expect(@transaction.transaction_id).to eq('wed34rec324vfv')
+      expect(@transaction.quantity).to eq(@transaction_data["transaction_factory_attrs"]["quantity"])
+      expect(@transaction.transaction_id).to eq(@transaction_data["transaction_factory_attrs"]["transaction_id"])
     end
 
     it 'redirects to the transaction list' do
@@ -163,8 +176,10 @@ RSpec.describe TransactionsController, type: :controller do
 
    context 'invalid attributes' do
     before do
-        @transaction_invalid_update_attrs = FactoryGirl.attributes_for(:transaction, quantity: nil, transaction_id: 'wed34rec324vfv',
-                                                                      product: @product, supplier: @supplier)
+        @transaction_invalid_update_attrs = FactoryGirl.attributes_for(:transaction,
+                                                                        quantity: @transaction_data["invalid_transaction_factory_attributes"]["quantity"],
+                                                                        product: @product,
+                                                                        supplier: @supplier)
       end
     it 'locates the requested @transaction' do
       patch :update, params: { id: @transaction, transaction:  @transaction_invalid_update_attrs }
@@ -177,8 +192,8 @@ RSpec.describe TransactionsController, type: :controller do
         transaction: @transaction_invalid_update_attrs
       }
       @transaction.reload
-      expect(@transaction.quantity).to eq(150)
-      expect(@transaction.transaction_id).to_not eq('wed34rec324vfv')
+      expect(@transaction.quantity).to eq(@transaction_data["transaction_factory_attrs"]["quantity"])
+      expect(@transaction.transaction_id).to_not eq(@transaction_data["invalid_transaction_factory_attributes"]["transaction_id"])
     end
 
     it 're-renders the edit method' do

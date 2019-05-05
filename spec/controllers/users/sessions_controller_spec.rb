@@ -22,8 +22,12 @@ RSpec.describe Users::SessionsController, type: :controller do
     end
 
     context 'Failed login' do
+      before do
+        @user_session_attrs = FactoryGirl.attributes_for(:user)
+      end
+
       it 'should not login user' do
-        params = { user: { email: 'abc@gmail.com', password: nil } }
+        params = { user: @user_session_attrs }
         post :create, params: params
         expect(subject.send(:current_user)).to be_nil
       end
